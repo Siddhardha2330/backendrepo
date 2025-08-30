@@ -10,12 +10,34 @@ const dbPromise = require('./db');
 
 // Middleware
 app.use(cors({
-  origin: [
-    'https://frontendrepo-a2hc.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:5173'
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Allow Vercel domains and localhost
+    const allowedOrigins = [
+      'https://frontendrepo-a2hc.vercel.app',
+      'https://*.vercel.app',
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:5173'
+    ];
+    
+    // Check if origin matches any allowed pattern
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (allowed.includes('*')) {
+        return origin.includes(allowed.replace('*', ''));
+      }
+      return origin === allowed;
+    });
+    
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
