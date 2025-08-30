@@ -70,7 +70,12 @@ app.post('/api/logout', (req, res) => {
 
 // Health check for deployment verification
 app.get('/api/health', (req, res) => {
-  res.json({ ok: true, env: process.env.VERCEL ? 'vercel' : 'local' });
+  res.json({ 
+    ok: true, 
+    env: process.env.VERCEL ? 'vercel' : 'local',
+    cors: 'updated',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Mount quiz routes
