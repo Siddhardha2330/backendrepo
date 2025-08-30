@@ -18,7 +18,8 @@ app.use(cors({
     const allowedOrigins = [
       'https://frontendrepo-a2hc.vercel.app',
       'https://frontendrepo-rzfs.vercel.app',
-      'https://*.vercel.app',
+      'https://frontendrepo-4yl9.vercel.app',
+      'https://frontendrepo-rnqo.vercel.app',
       'http://localhost:3000',
       'http://localhost:3001',
       'http://localhost:5173'
@@ -26,13 +27,17 @@ app.use(cors({
     
     // Check if origin matches any allowed pattern
     const isAllowed = allowedOrigins.some(allowed => {
-      if (allowed.includes('*')) {
-        return origin.includes(allowed.replace('*', ''));
-      }
       return origin === allowed;
     });
     
+    // Also allow any Vercel domain
+    if (origin.endsWith('.vercel.app')) {
+      console.log('Allowing Vercel domain:', origin);
+      return callback(null, true);
+    }
+    
     if (isAllowed) {
+      console.log('Allowing specific domain:', origin);
       callback(null, true);
     } else {
       console.log('CORS blocked origin:', origin);
