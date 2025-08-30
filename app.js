@@ -17,6 +17,7 @@ app.use(cors({
     // Allow Vercel domains and localhost
     const allowedOrigins = [
       'https://frontendrepo-a2hc.vercel.app',
+      'https://frontendrepo-rzfs.vercel.app',
       'https://*.vercel.app',
       'http://localhost:3000',
       'http://localhost:3001',
