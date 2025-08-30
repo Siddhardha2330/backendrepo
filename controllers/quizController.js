@@ -255,7 +255,7 @@ exports.employeeStats = async (req, res) => {
     // Average rating (if you have a rating column, else set to 0)
     let avgRating = 0;
     try {
-      const [[r]] = await db.query('SELECT AVG(rating) AS avgRating FROM quizzes WHERE');
+      const [[r]] = await db.query('SELECT AVG(rating) AS avgRating FROM quizzes');
       avgRating = r.avgRating || 0;
     } catch { avgRating = 0; }
     res.json({
